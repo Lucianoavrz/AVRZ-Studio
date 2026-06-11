@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVRZ | Estilo que se nota</title>
+    <meta name="description" content="Reserva tu turno online en AVRZ STUDIO. Cortes de pelo premium, degradados, afeitados y los mejores productos urbanos para el cabello.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@700;800;900&family=Outfit:wght@400;600;700;900&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <!-- FontAwesome para iconos urbanos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <!-- Barra de Navegación -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <img src="assets/logo.jpg" alt="AVRZ 777 Logo" class="brand-logo-img">
+            </a>
+            <nav class="nav-menu">
+                <a href="#hero" class="nav-link active">Inicio</a>
+                <a href="#services" class="nav-link">Servicios</a>
+                <a href="#shop" class="nav-link">Tienda</a>
+                <a href="#my-bookings" class="nav-link" id="nav-bookings-link">Mis Turnos <span class="badge" id="bookings-count">0</span></a>
+                <a href="#contact" class="nav-link">Contacto</a>
+            </nav>
+            <div class="nav-actions">
+                <button class="cart-btn" id="open-cart-btn" aria-label="Abrir Carrito">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-count" id="cart-badge">0</span>
+                </button>
+                <button class="btn btn-primary btn-sm btn-booking-trigger">Reservar</button>
+            </div>
+            <button class="mobile-menu-toggle" id="menu-toggle" aria-label="Menu principal">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+    <!-- Menú Móvil -->
+    <div class="mobile-nav" id="mobile-nav-panel">
+        <a href="#hero" class="mobile-link">Inicio</a>
+        <a href="#services" class="mobile-link">Servicios</a>
+        <a href="#shop" class="mobile-link">Tienda</a>
+        <a href="#my-bookings" class="mobile-link">Mis Turnos</a>
+        <a href="#contact" class="mobile-link">Contacto</a>
+        <div class="mobile-actions">
+            <button class="btn btn-primary w-full btn-booking-trigger">Reservar Turno</button>
+        </div>
+    </div>
+    <!-- Sección Hero -->
+    <section id="hero" class="hero-section">
+        <div class="hero-bg" style="background-image: linear-gradient(rgba(11, 12, 16, 0.62), rgba(11, 12, 16, 0.88)), url('assets/hero.png'); background-position: center top;"></div>
+        <div class="container hero-container">
+            <div class="hero-content">
+                <span class="hero-badge"><i class="fa-solid fa-fire"></i> AVRZ — Estilo que se nota</span>
+                <h1 class="hero-title">
+                    CORTES QUE <br>
+                    <span class="gradient-text">DEFINEN TU ESTILO</span>
+                </h1>
+                <p class="hero-subtitle">Experimentá el verdadero flow de la barbería urbana. Precisión, arte y productos de la más alta calidad en Bahía Blanca.</p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary btn-lg btn-booking-trigger">
+                        <i class="fa-regular fa-calendar-check"></i> Agendar Turno Online
+                    </button>
+                    <a href="#services" class="btn btn-outline btn-lg">Ver Servicios</a>
+                </div>
+                <div class="hero-features">
+                    <div class="feat-item"><i class="fa-solid fa-award"></i> <span>Calidad Premium</span></div>
+                    <div class="feat-item"><i class="fa-solid fa-clock"></i> <span>Turnos Online</span></div>
+                    <div class="feat-item"><i class="fa-solid fa-shop"></i> <span>Productos Exclusivos</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <a href="#services"><i class="fa-solid fa-chevron-down animate-bounce"></i></a>
+        </div>
+    </section>
+    <!-- Sección Servicios & Tarifario -->
+    <section id="services" class="section-padding">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-subtitle">Tarifario de Servicios</span>
+                <h2 class="section-title">SERVICIOS & <span class="neon-text-green">PRECIOS</span></h2>
+                <div class="header-line"></div>
+            </div>
+            <!-- Contenedor de Filtros de Servicios -->
+            <div class="filters-container">
+                <button class="filter-btn active" data-category="all">Todos</button>
+                <button class="filter-btn" data-category="pelo">Cabello</button>
+                <button class="filter-btn" data-category="barba">Barba</button>
+                <button class="filter-btn" data-category="combos">Combos Especiales</button>
+            </div>
+            <div class="services-grid" id="services-container">
+                <!-- Se inyecta dinámicamente con JS -->
+            </div>
+        </div>
+    </section>
+    <!-- Sección Tienda de Productos (Shop) -->
+    <section id="shop" class="section-padding bg-dark-secondary">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-subtitle">El Cuidado Diario de tu Estilo</span>
+                <h2 class="section-title">STREET <span class="gradient-text">PRODUCTS</span></h2>
+                <p class="section-description">Llevate el estilo a casa con los mejores polvos texturizadores, ceras y aceites profesionales que usamos en el estudio.</p>
+                <div class="header-line"></div>
+            </div>
+            <div class="products-grid" id="products-container">
+                <!-- Se inyecta dinámicamente con JS -->
+            </div>
+            <!-- Banner / Guía de Aplicación de Productos -->
+            <div class="shop-guide-banner glass-card">
+                <div class="guide-content">
+                    <span class="guide-subtitle"><i class="fa-solid fa-graduation-cap"></i> Tips de Estilo</span>
+                    <h3 class="guide-title">¿CÓMO APLICAR NUESTROS <span class="gradient-text">PRODUCTOS</span>?</h3>
+                    <p class="guide-description">Cuidar tu cabello y barba es cuestión de técnica. Seguí el paso a paso oficial de AVRZ STUDIO para lograr un peinado y una hidratación impecable sin dañar tu salud capilar.</p>
+                    <div class="guide-buttons-row">
+                        <button class="btn btn-primary" id="open-wax-guide-btn"><i class="fa-solid fa-eye"></i> Guía de Pomadas</button>
+                        <button class="btn btn-primary" id="open-oil-guide-btn"><i class="fa-solid fa-eye"></i> Guía de Aceites</button>
+                    </div>
+                </div>
+                <div class="guide-image-container double-thumbs">
+                    <div class="guide-thumb-box" id="wax-guide-thumb">
+                        <img src="assets/pomada-guia.jpg" alt="Guía de aplicación de pomadas" class="guide-img-thumb">
+                        <span class="guide-img-overlay"><i class="fa-solid fa-maximize"></i> Ceras</span>
+                    </div>
+                    <div class="guide-thumb-box" id="oil-guide-thumb">
+                        <img src="assets/oil-guia.jpg" alt="Guía de aplicación de aceites" class="guide-img-thumb">
+                        <span class="guide-img-overlay"><i class="fa-solid fa-maximize"></i> Aceites</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Sección Mis Turnos (LocalStorage persistido) -->
+    <section id="my-bookings" class="section-padding">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-subtitle">Gestión de Citas</span>
+                <h2 class="section-title">MIS <span class="neon-text-mint">TURNOS</span></h2>
+                <div class="header-line"></div>
+            </div>
+            
+            <div class="bookings-wrapper">
+                <div class="bookings-list-container glass-card" id="bookings-list">
+                    <!-- Se inyectará dinámicamente -->
+                    <div class="empty-state">
+                        <i class="fa-regular fa-calendar-minus"></i>
+                        <p>No tenés ningún turno reservado todavía.</p>
+                        <button class="btn btn-primary btn-booking-trigger">Reservar un turno ahora</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Sección Contacto / Ubicación -->
+    <section id="contact" class="section-padding bg-dark-secondary">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-subtitle">Vení a Visitarnos</span>
+                <h2 class="section-title">LOCATION & <span class="neon-text-green">CONTACTO</span></h2>
+                <div class="header-line"></div>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info glass-card">
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+                        <div class="info-details">
+                            <h3>Dirección</h3>
+                            <p>O'Higgins 179, Bahía Blanca</p>
+                            <p class="text-muted">Provincia de Buenos Aires</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
+                        <div class="info-details">
+                            <h3>Teléfono / WhatsApp</h3>
+                            <p><a href="https://wa.me/542915376912" target="_blank" class="phone-link">+54 291 537 6912</a></p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fa-regular fa-clock"></i></div>
+                        <div class="info-details">
+                            <h3>Horarios de Atención</h3>
+                            <p>Lunes a Viernes: 12:00 a 20:30 hs</p>
+                            <p>Sábados: 10:00 a 20:30 hs</p>
+                            <p class="text-muted" style="margin-top: 4px; font-size: 0.85rem;"><i class="fa-solid fa-calendar-check"></i> Siempre con turnos previos</p>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://instagram.com/avrz.barber" target="_blank" aria-label="Instagram AVRZ Barber"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://wa.me/542915376912" target="_blank" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <!-- Mapa Simulado / Estilo Dark Moderno -->
+                <div class="map-simulated glass-card">
+                    <div class="map-overlay">
+                        <div class="map-marker-ping"></div>
+                        <div class="map-tooltip">
+                            <strong>AVRZ STUDIO</strong><br>
+                            O'Higgins 179
+                        </div>
+                    </div>
+                    <!-- Dibujo tipo gráfico urbano que emula un mapa de calles moderno -->
+                    <div class="grid-lines-street">
+                        <div class="street street-h h-1"></div>
+                        <div class="street street-h h-2"></div>
+                        <div class="street street-v v-1"></div>
+                        <div class="street street-v v-2"></div>
+                        <span class="street-label label-1">O'Higgins</span>
+                        <span class="street-label label-2">Saavedra</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Modal del Turnero (Reserva Paso a Paso) -->
+    <div class="modal" id="booking-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content glass-card">
+            <button class="modal-close" id="close-booking-modal" aria-label="Cerrar modal">&times;</button>
+            
+            <div class="booking-wizard">
+                <!-- Barra de Progreso -->
+                <div class="wizard-header">
+                    <h3>RESERVAR TURNO</h3>
+                    <div class="progress-bar">
+                        <div class="progress-step active" data-step="1">1<span>Servicio</span></div>
+                        <div class="progress-step" data-step="2">2<span>Fecha/Hora</span></div>
+                        <div class="progress-step" data-step="3">3<span>Tus Datos</span></div>
+                    </div>
+                </div>
+                <!-- Pasos del Wizard -->
+                <div class="wizard-body">
+                    <!-- Paso 1: Selección de Servicio -->
+                    <div class="wizard-step active" id="step-1">
+                        <h4>Seleccioná un Servicio</h4>
+                        <div class="step-services-list" id="wizard-services-list">
+                            <!-- Se rellena con JS -->
+                        </div>
+                        
+                        <!-- Panel de Adicional (Cejas) -->
+                        <div class="addon-prompt-container" id="addon-prompt" style="display: none;">
+                            <div class="addon-prompt-content glass-card">
+                                <h5><i class="fa-solid fa-wand-magic-sparkles"></i> ¿Sumamos perfilado de cejas?</h5>
+                                <p>Dale el toque final a tu estilo por solo <strong>+$2.000</strong> adicionales.</p>
+                                <div class="addon-buttons">
+                                    <button type="button" class="btn btn-primary btn-sm" id="btn-addon-yes">Sí, sumar cejas (+ $2.000)</button>
+                                    <button type="button" class="btn btn-outline btn-sm" id="btn-addon-no">No, solo el corte</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Paso 2: Selección de Fecha y Hora -->
+                    <div class="wizard-step" id="step-2">
+                        <div class="step-nav-buttons">
+                            <button class="btn btn-xs btn-outline btn-prev-step"><i class="fa-solid fa-arrow-left"></i> Volver</button>
+                        </div>
+                        <h4>Seleccioná Fecha y Hora</h4>
+                        <div class="datetime-picker-layout">
+                            <div class="calendar-container">
+                                <div class="calendar-header">
+                                    <button id="calendar-prev-month" class="calendar-nav-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                                    <span id="calendar-month-title">Mayo 2026</span>
+                                    <button id="calendar-next-month" class="calendar-nav-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                                </div>
+                                <div class="calendar-weekdays">
+                                    <div>Do</div><div>Lu</div><div>Ma</div><div>Mi</div><div>Ju</div><div>Vi</div><div>Sá</div>
+                                </div>
+                                <div class="calendar-days" id="calendar-days-grid">
+                                    <!-- Inyectado por JS -->
+                                </div>
+                            </div>
+                            
+                            <div class="timeslots-container">
+                                <h5>Horarios Disponibles para el <span id="selected-date-label">Seleccioná un día</span></h5>
+                                <div class="timeslots-grid" id="timeslots-grid-container">
+                                    <p class="select-date-prompt">Primero debés seleccionar un día del calendario que esté disponible.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Paso 3: Datos del Cliente -->
+                    <div class="wizard-step" id="step-3">
+                        <div class="step-nav-buttons">
+                            <button class="btn btn-xs btn-outline btn-prev-step"><i class="fa-solid fa-arrow-left"></i> Volver</button>
+                        </div>
+                        <h4>Confirmá tus Datos</h4>
+                        <form id="booking-client-form" class="booking-form">
+                            <div class="form-group">
+                                <label for="client-name">Nombre y Apellido *</label>
+                                <input type="text" id="client-name" required placeholder="Ej: Juan Pérez">
+                            </div>
+                            <div class="form-group">
+                                <label for="client-phone">Número de WhatsApp (con código de área) *</label>
+                                <input type="tel" id="client-phone" required placeholder="Ej: 2914752299">
+                                <small>Te enviaremos un recordatorio por WhatsApp.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="client-notes">Notas / Pedidos Especiales</label>
+                                <textarea id="client-notes" rows="3" placeholder="Contanos si tenés alguna preferencia..."></textarea>
+                            </div>
+                            <div class="booking-summary-box glass-card">
+                                <h5>Resumen de tu Turno</h5>
+                                <p><i class="fa-solid fa-scissors"></i> <span id="summary-service">Corte de Pelo</span></p>
+                                <p><i class="fa-solid fa-user-ninja"></i> <span id="summary-barber">Alex "The Fade"</span></p>
+                                <p><i class="fa-regular fa-calendar-check"></i> <span id="summary-date">Viernes 22 de Mayo</span> a las <span id="summary-time">15:00 hs</span></p>
+                                <p class="summary-price"><i class="fa-solid fa-dollar-sign"></i> Total: <span id="summary-cost">$0</span></p>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-full btn-lg" id="submit-booking-btn">
+                                <i class="fa-brands fa-whatsapp"></i> Confirmar Turno
+                            </button>
+                        </form>
+                    </div>
+                    <!-- Paso 5: Ticket Digital (Exito) -->
+                    <div class="wizard-step" id="step-success">
+                        <div class="success-header">
+                            <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+                            <h3>¡TURNO RESERVADO!</h3>
+                            <p>Tu cita quedó confirmada con éxito.</p>
+                        </div>
+                        <!-- Ticket Estilo Vintage/Futurista -->
+                        <div class="digital-ticket">
+                            <div class="ticket-top">
+                                <div class="ticket-logo">
+                                    <img src="assets/logo.jpg" alt="AVRZ 777 Logo" class="ticket-logo-img">
+                                </div>
+                                <div class="ticket-code">COD: <span id="ticket-booking-code">AVRZ-12345</span></div>
+                            </div>
+                            <div class="ticket-divider">
+                                <div class="notch notch-left"></div>
+                                <div class="notch notch-right"></div>
+                            </div>
+                            <div class="ticket-details">
+                                <div class="detail-row">
+                                    <span>Servicio</span>
+                                    <strong id="ticket-service">Corte Degradado</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Estilista</span>
+                                    <strong id="ticket-barber">Alex "The Fade"</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Fecha</span>
+                                    <strong id="ticket-date">Viernes, 22 de Mayo</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Horario</span>
+                                    <strong id="ticket-time">15:00 hs</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Cliente</span>
+                                    <strong id="ticket-client">Juan Pérez</strong>
+                                </div>
+                                <div class="detail-row total-row">
+                                    <span>Total a Pagar</span>
+                                    <strong id="ticket-price">$3500</strong>
+                                </div>
+                            </div>
+                            <div class="ticket-footer">
+                                <p>O'Higgins 179, Bahía Blanca</p>
+                                <p>Te esperamos. Si necesitás cancelar, podés hacerlo desde la web en la sección "Mis Turnos".</p>
+                            </div>
+                        </div>
+                        <div class="success-actions">
+                            <button class="btn btn-outline w-full" id="close-success-btn">Volver al Inicio</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de Selección de Variantes de Producto -->
+    <div class="modal" id="variant-modal">
+        <div class="modal-overlay" id="variant-modal-overlay"></div>
+        <div class="modal-content glass-card variant-modal-content">
+            <button class="modal-close" id="close-variant-modal" aria-label="Cerrar modal">&times;</button>
+            <div class="variant-modal-body">
+                <h3 class="variant-modal-title" id="variant-modal-title">ELEGÍ TU PRODUCTO</h3>
+                <p class="variant-modal-desc" id="variant-modal-desc">Seleccioná la variante y agregala a tu pedido.</p>
+                
+                <!-- Lista de variantes -->
+                <div class="variant-options-list" id="variant-options-container">
+                    <!-- Se inyecta con JS -->
+                </div>
+                
+                <div class="variant-modal-footer">
+                    <div class="variant-qty-selector">
+                        <button class="qty-btn" id="variant-qty-minus">-</button>
+                        <span class="qty-val" id="variant-qty-value">1</span>
+                        <button class="qty-btn" id="variant-qty-plus">+</button>
+                    </div>
+                    <button class="btn btn-primary btn-lg" id="add-variant-to-cart-btn">
+                        <i class="fa-solid fa-cart-plus"></i> Agregar al Carrito
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de Guía de Aplicación -->
+    <div class="modal" id="guide-modal">
+        <div class="modal-overlay" id="guide-modal-overlay"></div>
+        <div class="modal-content glass-card guide-modal-content">
+            <button class="modal-close" id="close-guide-modal" aria-label="Cerrar modal">&times;</button>
+            <div class="guide-modal-body">
+                <h3 class="guide-modal-title">GUÍA DE APLICACIÓN</h3>
+                <p class="guide-modal-desc">Seguí estos pasos recomendados por AVRZ STUDIO para lucir tu estilo al máximo.</p>
+                <div class="guide-modal-img-wrapper">
+                    <img src="assets/pomada-guia.jpg" alt="Guía visual de aplicación de pomadas" class="guide-modal-img">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Panel Lateral Carrito de Compras (Slide-Out) -->
+    <div class="cart-panel" id="cart-panel">
+        <div class="cart-panel-overlay" id="cart-overlay"></div>
+        <div class="cart-content glass-card">
+            <div class="cart-header">
+                <h3>TU COMPRA</h3>
+                <button class="close-cart" id="close-cart-btn">&times;</button>
+            </div>
+            
+            <div class="cart-body" id="cart-items-container">
+                <!-- Se rellena con JS -->
+                <div class="empty-cart-state">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <p>Tu carrito está vacío.</p>
+                    <a href="#shop" class="btn btn-outline btn-sm" id="shop-now-btn">Explorar Tienda</a>
+                </div>
+            </div>
+            <div class="cart-footer" id="cart-summary-footer" style="display: none;">
+                <div class="cart-total-row">
+                    <span>Total:</span>
+                    <span class="total-price" id="cart-total-price">$0</span>
+                </div>
+                <p class="cart-checkout-tip">Finalizá tu compra por WhatsApp para coordinar el retiro en el local.</p>
+                <button class="btn btn-primary w-full btn-lg" id="checkout-cart-btn">
+                    <i class="fa-brands fa-whatsapp"></i> Finalizar Pedido
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-container">
+            <div class="footer-logo-container">
+                <img src="assets/logo.jpg" alt="AVRZ 777 Logo" class="footer-logo-img">
+            </div>
+            <p class="footer-slogan">AVRZ — Estilo que se nota</p>
+            <p class="footer-copy">&copy; 2026 AVRZ STUDIO. Reservas Online & Barber Shop. Bahía Blanca, Argentina. Diseñado con flow urbano.</p>
+        </div>
+    </footer>
+    <!-- Script de la App -->
+    <script src="app.js"></script>
+</body>
+</html>
+
