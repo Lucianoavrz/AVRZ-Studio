@@ -920,17 +920,17 @@ img {
 }
 
 .street-h {
-    height: 40px;
-    width: 120%;
-    left: -10%;
-    transform: rotate(-12deg);
+    height: 30px;
+    width: 100%;
+    left: 0%;
+    transform: none;
 }
 
 .street-v {
-    width: 40px;
-    height: 120%;
-    top: -10%;
-    transform: rotate(25deg);
+    width: 30px;
+    height: 100%;
+    top: 0%;
+    transform: none;
 }
 
 .h-1 {
@@ -961,13 +961,13 @@ img {
 .label-1 {
     top: 35%;
     left: 15%;
-    transform: rotate(-12deg);
+    transform: none;
 }
 
 .label-2 {
     top: 60%;
     right: 18%;
-    transform: rotate(-12deg);
+    transform: rotate(90deg);
 }
 
 .map-overlay {
