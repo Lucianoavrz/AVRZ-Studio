@@ -934,39 +934,41 @@ img {
 }
 
 .h-1 {
-    top: 30%;
+    top: 36%;
 }
 
 .h-2 {
-    top: 65%;
+    top: 76%;
 }
 
 .v-1 {
-    left: 35%;
+    left: 30%;
 }
 
 .v-2 {
-    left: 70%;
+    left: 74%;
 }
 
 .street-label {
     position: absolute;
-    color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.22);
     font-family: var(--font-heading);
     font-size: 0.8rem;
+    font-weight: 800;
     text-transform: uppercase;
     z-index: 2;
+    letter-spacing: 0.08em;
 }
 
 .label-1 {
-    top: 35%;
-    left: 15%;
+    top: 37%;
+    left: 44%;
     transform: none;
 }
 
 .label-2 {
-    top: 60%;
-    right: 18%;
+    top: 49%;
+    right: 17%;
     transform: rotate(90deg);
 }
 
