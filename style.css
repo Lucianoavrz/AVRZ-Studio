@@ -1210,28 +1210,24 @@ img {
 /* Adicional (Cejas) en Turnero como Pop-up/Modal Overlay */
 .addon-prompt-container {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(6, 7, 9, 0.8);
-    backdrop-filter: blur(6px);
+    inset: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
+    background: rgba(6, 7, 9, 0.75);
+    backdrop-filter: blur(6px);
     z-index: 9999;
-    animation: fadeIn var(--transition-fast) forwards;
 }
 
 .addon-prompt-content {
-    text-align: center;
-    max-width: 380px;
-    width: 90%;
-    padding: 35px 30px;
+    width: min(360px, 92vw);
+    padding: 28px 22px;
     border: 2px solid var(--neon-green);
-    box-shadow: var(--shadow-neon), 0 10px 30px rgba(0,0,0,0.6);
+    border-radius: 16px;
     background: var(--bg-secondary);
-    border-radius: 12px;
+    box-shadow: var(--shadow-neon), 0 10px 30px rgba(0,0,0,.6);
+    text-align: center;
 }
 .addon-prompt-content h5 {
     font-family: var(--font-heading);
