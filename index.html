@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body class="dark-theme">
     <header class="navbar">
         <div class="nav-container">
@@ -123,15 +122,21 @@
                     <p class="guide-description">Cuidar tu cabello y barba es cuestión de técnica. Seguí el paso a paso oficial de AVRZ STUDIO para lograr un peinado y una hidratación impecable sin dañar tu salud capilar.</p>
 
                     <div class="guide-buttons-row">
-                        <button class="btn btn-primary btn-lg" id="open-guides-selector-btn">
-                            <i class="fa-solid fa-book-open"></i> ¿Cómo aplicar los productos?
-                        </button>
+                        <button class="btn btn-primary" id="open-wax-guide-btn"><i class="fa-solid fa-eye"></i> Guía de Pomadas</button>
+                        <button class="btn btn-primary" id="open-oil-guide-btn"><i class="fa-solid fa-eye"></i> Guía de Aceites</button>
                     </div>
                 </div>
 
-                <div class="guide-image-container single-thumb" id="guides-selector-thumb">
-                    <img src="assets/pomada-guia.jpg" alt="Guías de aplicación de productos AVRZ" class="guide-img-thumb">
-                    <span class="guide-img-overlay"><i class="fa-solid fa-expand"></i> Abrir Guía Interactiva</span>
+                <div class="guide-image-container double-thumbs">
+                    <div class="guide-thumb-box" id="wax-guide-thumb">
+                        <img src="assets/pomada-guia.jpg" alt="Guía de aplicación de pomadas" class="guide-img-thumb">
+                        <span class="guide-img-overlay"><i class="fa-solid fa-maximize"></i> Ceras</span>
+                    </div>
+
+                    <div class="guide-thumb-box" id="oil-guide-thumb">
+                        <img src="assets/oil-guia.jpg" alt="Guía de aplicación de aceites" class="guide-img-thumb">
+                        <span class="guide-img-overlay"><i class="fa-solid fa-maximize"></i> Aceites</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -344,12 +349,30 @@
                             </div>
 
                             <div class="ticket-details">
-                                <div class="detail-row"><span>Servicio</span><strong id="ticket-service">Corte Degradado</strong></div>
-                                <div class="detail-row"><span>Estilista</span><strong id="ticket-barber">AVRZ</strong></div>
-                                <div class="detail-row"><span>Fecha</span><strong id="ticket-date">Viernes, 22 de Mayo</strong></div>
-                                <div class="detail-row"><span>Horario</span><strong id="ticket-time">15:00 hs</strong></div>
-                                <div class="detail-row"><span>Cliente</span><strong id="ticket-client">Juan Pérez</strong></div>
-                                <div class="detail-row total-row"><span>Total a Pagar</span><strong id="ticket-price">$3500</strong></div>
+                                <div class="detail-row">
+                                    <span>Servicio</span>
+                                    <strong id="ticket-service">Corte Degradado</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Estilista</span>
+                                    <strong id="ticket-barber">AVRZ</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Fecha</span>
+                                    <strong id="ticket-date">Viernes, 22 de Mayo</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Horario</span>
+                                    <strong id="ticket-time">15:00 hs</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Cliente</span>
+                                    <strong id="ticket-client">Juan Pérez</strong>
+                                </div>
+                                <div class="detail-row total-row">
+                                    <span>Total a Pagar</span>
+                                    <strong id="ticket-price">$3500</strong>
+                                </div>
                             </div>
 
                             <div class="ticket-footer">
@@ -400,16 +423,9 @@
 
             <div class="guide-modal-body">
                 <h3 class="guide-modal-title">GUÍA DE APLICACIÓN</h3>
-                <p class="guide-modal-desc">Seleccioná el producto para ver su guía de aplicación paso a paso.</p>
-
-                <div class="guide-tabs-container">
-                    <button class="guide-tab-btn active" data-guide="wax"><i class="fa-solid fa-cube"></i> Pomadas</button>
-                    <button class="guide-tab-btn" data-guide="oil"><i class="fa-solid fa-droplet"></i> Aceites</button>
-                    <button class="guide-tab-btn" data-guide="powder"><i class="fa-solid fa-wand-magic-sparkles"></i> Polvo</button>
-                </div>
-
+                <p class="guide-modal-desc">Seguí estos pasos recomendados por AVRZ STUDIO para lucir tu estilo al máximo.</p>
                 <div class="guide-modal-img-wrapper">
-                    <img src="assets/pomada-guia.jpg" alt="Guía visual de aplicación" class="guide-modal-img" onerror="this.src='https://placehold.co/600x400/191c26/FFF?text=Guia+de+Producto'">
+                    <img src="assets/pomada-guia.jpg" alt="Guía visual de aplicación de pomadas" class="guide-modal-img">
                 </div>
             </div>
         </div>
