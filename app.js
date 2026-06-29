@@ -286,39 +286,56 @@ function setupEventListeners() {
 
     document.getElementById('checkout-cart-btn').addEventListener('click', handleCartCheckout);
 
+   // Modal de Guía de Aplicación (Selector Unificado de Guías)
     const guideModal = document.getElementById('guide-modal');
-    const openWaxGuideBtn = document.getElementById('open-wax-guide-btn');
-    const openOilGuideBtn = document.getElementById('open-oil-guide-btn');
-    const waxGuideThumb = document.getElementById('wax-guide-thumb');
-    const oilGuideThumb = document.getElementById('oil-guide-thumb');
+    const openGuidesBtn = document.getElementById('open-guides-selector-btn');
+    const guidesThumb = document.getElementById('guides-selector-thumb');
     const closeGuideModalBtn = document.getElementById('close-guide-modal');
     const guideModalOverlay = document.getElementById('guide-modal-overlay');
     const guideModalImg = guideModal.querySelector('.guide-modal-img');
     const guideModalTitle = guideModal.querySelector('.guide-modal-title');
-
-    const openGuide = (type) => {
+    const guideTabBtns = guideModal.querySelectorAll('.guide-tab-btn');
+    const updateGuideUI = (type) => {
+        // Actualizar tabs visualmente
+        guideTabBtns.forEach(btn => {
+            if (btn.dataset.guide === type) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        // Actualizar imagen y título según la selección
         if (type === 'wax') {
             guideModalImg.src = 'assets/pomada-guia.jpg';
-            guideModalTitle.innerText = 'GUÍA DE APLICACIÓN - CERAS';
+            guideModalImg.alt = 'Guía visual de aplicación de pomadas';
+            guideModalTitle.innerText = 'GUÍA DE APLICACIÓN - CERAS / POMADAS';
         } else if (type === 'oil') {
             guideModalImg.src = 'assets/oil-guia.jpg';
-            guideModalTitle.innerText = 'GUÍA DE APLICACIÓN - ACEITES';
+            guideModalImg.alt = 'Guía visual de aplicación de aceites';
+            guideModalTitle.innerText = 'GUÍA DE APLICACIÓN - ACEITES PARA BARBA';
+        } else if (type === 'powder') {
+            guideModalImg.src = 'assets/powder-guia.jpg';
+            guideModalImg.alt = 'Guía visual de aplicación de polvo texturizador';
+            guideModalTitle.innerText = 'GUÍA DE APLICACIÓN - POLVO TEXTURIZADOR';
         }
-
+    };
+    const openGuideModal = (initialType = 'wax') => {
+        updateGuideUI(initialType);
         guideModal.classList.add('open');
     };
-
-    const closeGuide = () => {
+    const closeGuideModal = () => {
         guideModal.classList.remove('open');
     };
-
-    if (openWaxGuideBtn) openWaxGuideBtn.addEventListener('click', () => openGuide('wax'));
-    if (openOilGuideBtn) openOilGuideBtn.addEventListener('click', () => openGuide('oil'));
-    if (waxGuideThumb) waxGuideThumb.addEventListener('click', () => openGuide('wax'));
-    if (oilGuideThumb) oilGuideThumb.addEventListener('click', () => openGuide('oil'));
-    if (closeGuideModalBtn) closeGuideModalBtn.addEventListener('click', closeGuide);
-    if (guideModalOverlay) guideModalOverlay.addEventListener('click', closeGuide);
-}
+    if (openGuidesBtn) openGuidesBtn.addEventListener('click', () => openGuideModal('wax'));
+    if (guidesThumb) guidesThumb.addEventListener('click', () => openGuideModal('wax'));
+    if (closeGuideModalBtn) closeGuideModalBtn.addEventListener('click', closeGuideModal);
+    if (guideModalOverlay) guideModalOverlay.addEventListener('click', closeGuideModal);
+    // Event listeners para los botones de las pestañas
+    guideTabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            updateGuideUI(btn.dataset.guide);
+        });
+    });
 
 // ==========================================
 // RENDERIZADO DE CONTENIDO
