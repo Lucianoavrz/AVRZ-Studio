@@ -121,22 +121,21 @@
                     <h3 class="guide-title">¿CÓMO APLICAR NUESTROS <span class="gradient-text">PRODUCTOS</span>?</h3>
                     <p class="guide-description">Cuidar tu cabello y barba es cuestión de técnica. Seguí el paso a paso oficial de AVRZ STUDIO para lograr un peinado y una hidratación impecable sin dañar tu salud capilar.</p>
 
+                    <!-- Banner / Guía de Aplicación de Productos -->
+            <div class="shop-guide-banner glass-card">
+                <div class="guide-content">
+                    <span class="guide-subtitle"><i class="fa-solid fa-graduation-cap"></i> Tips de Estilo</span>
+                    <h3 class="guide-title">¿CÓMO APLICAR NUESTROS <span class="gradient-text">PRODUCTOS</span>?</h3>
+                    <p class="guide-description">Cuidar tu cabello y barba es cuestión de técnica. Seguí el paso a paso oficial de AVRZ STUDIO para lograr un peinado y una hidratación impecable sin dañar tu salud capilar.</p>
                     <div class="guide-buttons-row">
-                        <button class="btn btn-primary" id="open-wax-guide-btn"><i class="fa-solid fa-eye"></i> Guía de Pomadas</button>
-                        <button class="btn btn-primary" id="open-oil-guide-btn"><i class="fa-solid fa-eye"></i> Guía de Aceites</button>
+                        <button class="btn btn-primary btn-lg" id="open-guides-selector-btn">
+                            <i class="fa-solid fa-book-open"></i> ¿Cómo aplicar los productos?
+                        </button>
                     </div>
                 </div>
-
-                <div class="guide-image-container double-thumbs">
-                    <div class="guide-thumb-box" id="wax-guide-thumb">
-                        <img src="assets/pomada-guia.jpg" alt="Guía de aplicación de pomadas" class="guide-img-thumb">
-                        <span class="guide-img-overlay"><i class="fa-solid fa-maximize"></i> Ceras</span>
-                    </div>
-
-                    <div class="guide-thumb-box" id="oil-guide-thumb">
-                        <img src="assets/oil-guia.jpg" alt="Guía de aplicación de aceites" class="guide-img-thumb">
-                        <span class="guide-img-overlay"><i class="fa-solid fa-maximize"></i> Aceites</span>
-                    </div>
+                <div class="guide-image-container single-thumb" id="guides-selector-thumb">
+                    <img src="assets/pomada-guia.jpg" alt="Guías de aplicación de productos AVRZ" class="guide-img-thumb">
+                    <span class="guide-img-overlay"><i class="fa-solid fa-expand"></i> Abrir Guía Interactiva</span>
                 </div>
             </div>
         </div>
@@ -416,16 +415,23 @@
         </div>
     </div>
 
+    <!-- Modal de Guía de Aplicación (Selector Unificado de Guías) -->
     <div class="modal" id="guide-modal">
         <div class="modal-overlay" id="guide-modal-overlay"></div>
         <div class="modal-content glass-card guide-modal-content">
             <button class="modal-close" id="close-guide-modal" aria-label="Cerrar modal">&times;</button>
-
             <div class="guide-modal-body">
                 <h3 class="guide-modal-title">GUÍA DE APLICACIÓN</h3>
-                <p class="guide-modal-desc">Seguí estos pasos recomendados por AVRZ STUDIO para lucir tu estilo al máximo.</p>
+                <p class="guide-modal-desc">Seleccioná el producto para ver su guía de aplicación paso a paso.</p>
+                
+                <!-- Selector de pestañas para guías -->
+                <div class="guide-tabs-container">
+                    <button class="guide-tab-btn active" data-guide="wax"><i class="fa-solid fa-cube"></i> Pomadas</button>
+                    <button class="guide-tab-btn" data-guide="oil"><i class="fa-solid fa-droplet"></i> Aceites</button>
+                    <button class="guide-tab-btn" data-guide="powder"><i class="fa-solid fa-wand-magic-sparkles"></i> Polvo</button>
+                </div>
                 <div class="guide-modal-img-wrapper">
-                    <img src="assets/pomada-guia.jpg" alt="Guía visual de aplicación de pomadas" class="guide-modal-img">
+                    <img src="assets/pomada-guia.jpg" alt="Guía visual de aplicación" class="guide-modal-img" onerror="this.src='https://placehold.co/600x400/191c26/FFF?text=Guia+de+Polvo+Texturizador'">
                 </div>
             </div>
         </div>
