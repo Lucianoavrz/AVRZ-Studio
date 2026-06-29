@@ -1,7 +1,3 @@
-// ==========================================
-// BASE DE DATOS LOCAL SIMULADA (MOCK DATA)
-// ==========================================
-
 const SERVICES = [
     {
         id: 'pelo-clasico',
@@ -17,7 +13,7 @@ const SERVICES = [
         price: 17000,
         duration: '50 min',
         category: 'pelo',
-        description: 'Degradado de alta precisión (high, mid o low fade) con diseño freestyle a navaja. Definición de patillas y cuello.'
+        description: 'Degradado de alta precisión con diseño freestyle a navaja. Definición de patillas y cuello.'
     },
     {
         id: 'barba-perfilado',
@@ -25,7 +21,7 @@ const SERVICES = [
         price: 9000,
         duration: '30 min',
         category: 'barba',
-        description: 'Diseño y rebaje de barba completa con ritual de toalla caliente más perfilado detallado de cejas a navaja.'
+        description: 'Diseño y rebaje de barba completa con ritual de toalla caliente más perfilado detallado de cejas.'
     },
     {
         id: 'combo-avrz',
@@ -33,7 +29,7 @@ const SERVICES = [
         price: 25000,
         duration: '60 min',
         category: 'combos',
-        description: 'El servicio completo de la casa: Corte (a elección) + Perfilado de Barba + Perfilado de Cejas para un estilo impecable.'
+        description: 'Corte a elección + Perfilado de Barba + Perfilado de Cejas para un estilo impecable.'
     }
 ];
 
@@ -53,7 +49,7 @@ const PRODUCTS = [
         type: 'simple',
         title: 'Polvo Texturizador',
         price: 14500,
-        desc: 'Da volumen al instante y acabado mate natural de larga duración. Ideal para peinados urbanos y desestructurados.',
+        desc: 'Da volumen al instante y acabado mate natural de larga duración.',
         img: 'assets/powder.png',
         category: 'Texturizador',
         badge: 'Popular'
@@ -63,7 +59,7 @@ const PRODUCTS = [
         type: 'grouped',
         title: 'Pomadas / Ceras',
         price: 20000,
-        desc: 'Fijación profesional y acabados a medida. Elegí el tipo que mejor se adapte a tu estilo de peinado.',
+        desc: 'Fijación profesional y acabados a medida.',
         img: 'assets/wax-desert.jpg',
         category: 'Fijación',
         badge: 'Exclusivo',
@@ -103,7 +99,7 @@ const PRODUCTS = [
         type: 'grouped',
         title: 'Aceites para Barba',
         price: 12500,
-        desc: 'Fórmula ligera que nutre, suaviza, da brillo y protege el vello y la piel. Elegí tu aroma favorito.',
+        desc: 'Fórmula ligera que nutre, suaviza, da brillo y protege el vello y la piel.',
         img: 'assets/oil-melon.jpg',
         category: 'Cuidado Barba',
         badge: 'Premium',
@@ -111,21 +107,21 @@ const PRODUCTS = [
             {
                 id: 'oil-melon',
                 title: 'Aceite de Barba - Melón',
-                desc: 'Fórmula que hidrata y nutre en profundidad dejando un refrescante aroma a melón.',
+                desc: 'Hidrata y nutre dejando un refrescante aroma a melón.',
                 img: 'assets/oil-melon.jpg',
                 badge: 'Fresco'
             },
             {
                 id: 'oil-welcome',
                 title: 'Aceite de Barba - Welcome',
-                desc: 'Aporta máxima suavidad y dominio con una fragancia amaderada de bienvenida.',
+                desc: 'Aporta suavidad y dominio con una fragancia amaderada.',
                 img: 'assets/oil-welcome.jpg',
                 badge: 'Clásico'
             },
             {
                 id: 'oil-musicman',
                 title: 'Aceite de Barba - Dr. Music Man',
-                desc: 'Protege, fortalece y da un brillo natural con un aroma audaz y distintivo.',
+                desc: 'Protege, fortalece y da brillo natural con aroma intenso.',
                 img: 'assets/oil-musicman.jpg',
                 badge: 'Intenso'
             }
@@ -133,24 +129,18 @@ const PRODUCTS = [
     }
 ];
 
-// ==========================================
-// ESTADO DE LA APLICACIÓN
-// ==========================================
 let cart = JSON.parse(localStorage.getItem('avrz_cart')) || [];
 let bookings = JSON.parse(localStorage.getItem('avrz_bookings')) || [];
 
 let activeBooking = {
     service: null,
-    barber: null,
+    barber: BARBERS[0],
     date: null,
-    time: null,
+    time: null
 };
 
 let currentCalendarDate = new Date();
 
-// ==========================================
-// SELECTORES DOM
-// ==========================================
 const servicesContainer = document.getElementById('services-container');
 const productsContainer = document.getElementById('products-container');
 const bookingsList = document.getElementById('bookings-list');
@@ -186,9 +176,10 @@ const ticketTime = document.getElementById('ticket-time');
 const ticketClient = document.getElementById('ticket-client');
 const ticketPrice = document.getElementById('ticket-price');
 const closeSuccessBtn = document.getElementById('close-success-btn');
-// ==========================================
-// INICIALIZACIÓN
-// ==========================================
+
+let selectedVariantId = null;
+let variantQty = 1;
+
 document.addEventListener('DOMContentLoaded', () => {
     renderServices('all');
     renderProducts();
@@ -197,9 +188,10 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
 });
 
-// Cambios en el header según el scroll
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+
     if (window.scrollY > 50) {
         navbar.classList.add('scrolled');
     } else {
@@ -207,87 +199,84 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// ==========================================
-// EVENT LISTENERS PRINCIPALES
-// ==========================================
 function setupEventListeners() {
     const menuToggle = document.getElementById('menu-toggle');
     const mobileNav = document.getElementById('mobile-nav-panel');
 
-    menuToggle.addEventListener('click', () => {
-        mobileNav.classList.toggle('open');
-        const icon = menuToggle.querySelector('i');
-
-        if (mobileNav.classList.contains('open')) {
-            icon.className = 'fa-solid fa-xmark';
-        } else {
-            icon.className = 'fa-solid fa-bars';
-        }
-    });
+    if (menuToggle && mobileNav) {
+        menuToggle.addEventListener('click', () => {
+            mobileNav.classList.toggle('open');
+            const icon = menuToggle.querySelector('i');
+            icon.className = mobileNav.classList.contains('open') ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+        });
+    }
 
     document.querySelectorAll('.mobile-link').forEach(link => {
         link.addEventListener('click', () => {
-            mobileNav.classList.remove('open');
-            menuToggle.querySelector('i').className = 'fa-solid fa-bars';
+            if (mobileNav) mobileNav.classList.remove('open');
+            if (menuToggle) menuToggle.querySelector('i').className = 'fa-solid fa-bars';
         });
     });
 
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            renderServices(e.target.dataset.category);
+            e.currentTarget.classList.add('active');
+            renderServices(e.currentTarget.dataset.category);
         });
     });
 
     document.querySelectorAll('.btn-booking-trigger').forEach(btn => {
-        btn.addEventListener('click', () => {
-            openBookingWizard();
+        btn.addEventListener('click', openBookingWizard);
+    });
+
+    if (closeBookingModalBtn) closeBookingModalBtn.addEventListener('click', closeBookingWizard);
+
+    if (prevMonthBtn) {
+        prevMonthBtn.addEventListener('click', () => {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+            renderCalendar();
         });
-    });
+    }
 
-    closeBookingModalBtn.addEventListener('click', closeBookingWizard);
+    if (nextMonthBtn) {
+        nextMonthBtn.addEventListener('click', () => {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+            renderCalendar();
+        });
+    }
 
-    prevMonthBtn.addEventListener('click', () => {
-        currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
-        renderCalendar();
-    });
-
-    nextMonthBtn.addEventListener('click', () => {
-        currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
-        renderCalendar();
-    });
-
-    clientForm.addEventListener('submit', handleBookingSubmit);
-
-    closeSuccessBtn.addEventListener('click', () => {
-        closeBookingWizard();
-    });
+    if (clientForm) clientForm.addEventListener('submit', handleBookingSubmit);
+    if (closeSuccessBtn) closeSuccessBtn.addEventListener('click', closeBookingWizard);
 
     document.querySelectorAll('.btn-prev-step').forEach(btn => {
         btn.addEventListener('click', () => {
             const currentActiveStep = document.querySelector('.wizard-step.active');
+            if (!currentActiveStep) return;
+
             const stepNumber = parseInt(currentActiveStep.id.split('-')[1]);
             goToStep(stepNumber - 1);
         });
     });
 
-    document.getElementById('open-cart-btn').addEventListener('click', () => {
-        cartPanel.classList.add('open');
-    });
+    const openCartBtn = document.getElementById('open-cart-btn');
+    const closeCartBtn = document.getElementById('close-cart-btn');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const checkoutCartBtn = document.getElementById('checkout-cart-btn');
 
-    document.getElementById('close-cart-btn').addEventListener('click', () => {
-        cartPanel.classList.remove('open');
-    });
+    if (openCartBtn) openCartBtn.addEventListener('click', () => cartPanel.classList.add('open'));
+    if (closeCartBtn) closeCartBtn.addEventListener('click', () => cartPanel.classList.remove('open'));
+    if (cartOverlay) cartOverlay.addEventListener('click', () => cartPanel.classList.remove('open'));
+    if (checkoutCartBtn) checkoutCartBtn.addEventListener('click', handleCartCheckout);
 
-    document.getElementById('cart-overlay').addEventListener('click', () => {
-        cartPanel.classList.remove('open');
-    });
+    setupGuideModal();
+    setupVariantModal();
+}
 
-    document.getElementById('checkout-cart-btn').addEventListener('click', handleCartCheckout);
-
-   // Modal de Guía de Aplicación (Selector Unificado de Guías)
+function setupGuideModal() {
     const guideModal = document.getElementById('guide-modal');
+    if (!guideModal) return;
+
     const openGuidesBtn = document.getElementById('open-guides-selector-btn');
     const guidesThumb = document.getElementById('guides-selector-thumb');
     const closeGuideModalBtn = document.getElementById('close-guide-modal');
@@ -295,53 +284,96 @@ function setupEventListeners() {
     const guideModalImg = guideModal.querySelector('.guide-modal-img');
     const guideModalTitle = guideModal.querySelector('.guide-modal-title');
     const guideTabBtns = guideModal.querySelectorAll('.guide-tab-btn');
+
     const updateGuideUI = (type) => {
-        // Actualizar tabs visualmente
         guideTabBtns.forEach(btn => {
-            if (btn.dataset.guide === type) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
+            btn.classList.toggle('active', btn.dataset.guide === type);
         });
-        // Actualizar imagen y título según la selección
+
         if (type === 'wax') {
             guideModalImg.src = 'assets/pomada-guia.jpg';
             guideModalImg.alt = 'Guía visual de aplicación de pomadas';
             guideModalTitle.innerText = 'GUÍA DE APLICACIÓN - CERAS / POMADAS';
-        } else if (type === 'oil') {
+        }
+
+        if (type === 'oil') {
             guideModalImg.src = 'assets/oil-guia.jpg';
             guideModalImg.alt = 'Guía visual de aplicación de aceites';
             guideModalTitle.innerText = 'GUÍA DE APLICACIÓN - ACEITES PARA BARBA';
-        } else if (type === 'powder') {
+        }
+
+        if (type === 'powder') {
             guideModalImg.src = 'assets/powder-guia.jpg';
             guideModalImg.alt = 'Guía visual de aplicación de polvo texturizador';
             guideModalTitle.innerText = 'GUÍA DE APLICACIÓN - POLVO TEXTURIZADOR';
         }
     };
+
     const openGuideModal = (initialType = 'wax') => {
         updateGuideUI(initialType);
         guideModal.classList.add('open');
     };
+
     const closeGuideModal = () => {
         guideModal.classList.remove('open');
     };
+
     if (openGuidesBtn) openGuidesBtn.addEventListener('click', () => openGuideModal('wax'));
     if (guidesThumb) guidesThumb.addEventListener('click', () => openGuideModal('wax'));
     if (closeGuideModalBtn) closeGuideModalBtn.addEventListener('click', closeGuideModal);
     if (guideModalOverlay) guideModalOverlay.addEventListener('click', closeGuideModal);
-    // Event listeners para los botones de las pestañas
-    guideTabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            updateGuideUI(btn.dataset.guide);
-        });
-    });
 
-// ==========================================
-// RENDERIZADO DE CONTENIDO
-// ==========================================
+    guideTabBtns.forEach(btn => {
+        btn.addEventListener('click', () => updateGuideUI(btn.dataset.guide));
+    });
+}
+
+function setupVariantModal() {
+    const variantModal = document.getElementById('variant-modal');
+    if (!variantModal) return;
+
+    const closeVariantModalBtn = document.getElementById('close-variant-modal');
+    const variantModalOverlay = document.getElementById('variant-modal-overlay');
+    const variantQtyMinus = document.getElementById('variant-qty-minus');
+    const variantQtyPlus = document.getElementById('variant-qty-plus');
+    const addVariantToCartBtn = document.getElementById('add-variant-to-cart-btn');
+
+    const closeVariantModal = () => {
+        variantModal.classList.remove('open');
+    };
+
+    if (closeVariantModalBtn) closeVariantModalBtn.addEventListener('click', closeVariantModal);
+    if (variantModalOverlay) variantModalOverlay.addEventListener('click', closeVariantModal);
+
+    if (variantQtyMinus) {
+        variantQtyMinus.addEventListener('click', () => {
+            if (variantQty > 1) {
+                variantQty--;
+                document.getElementById('variant-qty-value').innerText = variantQty;
+            }
+        });
+    }
+
+    if (variantQtyPlus) {
+        variantQtyPlus.addEventListener('click', () => {
+            variantQty++;
+            document.getElementById('variant-qty-value').innerText = variantQty;
+        });
+    }
+
+    if (addVariantToCartBtn) {
+        addVariantToCartBtn.addEventListener('click', () => {
+            if (selectedVariantId) {
+                addToCart(selectedVariantId, variantQty);
+                closeVariantModal();
+            }
+        });
+    }
+}
 
 function renderServices(filter = 'all') {
+    if (!servicesContainer) return;
+
     servicesContainer.innerHTML = '';
     const filtered = filter === 'all' ? SERVICES : SERVICES.filter(s => s.category === filter);
 
@@ -367,6 +399,8 @@ function renderServices(filter = 'all') {
 }
 
 function renderProducts() {
+    if (!productsContainer) return;
+
     productsContainer.innerHTML = '';
 
     PRODUCTS.forEach(prod => {
@@ -384,15 +418,11 @@ function renderProducts() {
                 <p class="product-desc">${prod.desc}</p>
                 <div class="product-footer">
                     <span class="product-price">${isGrouped ? 'Desde ' : ''}$${prod.price}</span>
-                    ${isGrouped ? `
-                        <button class="btn btn-primary btn-sm" onclick="openVariantSelector('${prod.id}')">
-                            <i class="fa-solid fa-layer-group"></i> Elegir Opciones
-                        </button>
-                    ` : `
-                        <button class="btn btn-primary btn-sm" onclick="addToCart('${prod.id}')">
-                            <i class="fa-solid fa-cart-plus"></i> Añadir
-                        </button>
-                    `}
+                    ${
+                        isGrouped
+                            ? `<button class="btn btn-primary btn-sm" onclick="openVariantSelector('${prod.id}')"><i class="fa-solid fa-layer-group"></i> Elegir Opciones</button>`
+                            : `<button class="btn btn-primary btn-sm" onclick="addToCart('${prod.id}')"><i class="fa-solid fa-cart-plus"></i> Añadir</button>`
+                    }
                 </div>
             </div>
         `;
@@ -401,14 +431,10 @@ function renderProducts() {
     });
 }
 
-// ==========================================
-// SISTEMA DE TURNERO / RESERVAS
-// ==========================================
-
 function openBookingWizard() {
     activeBooking = { service: null, barber: BARBERS[0], date: null, time: null };
 
-    clientForm.reset();
+    if (clientForm) clientForm.reset();
 
     const prompt = document.getElementById('addon-prompt');
     const list = document.getElementById('wizard-services-list');
@@ -427,18 +453,20 @@ function openBookingWizard() {
 
 function closeBookingWizard() {
     bookingModal.classList.remove('open');
-    document.getElementById('step-success').classList.remove('active');
-    document.getElementById('step-1').classList.add('active');
+
+    const successStep = document.getElementById('step-success');
+    const firstStep = document.getElementById('step-1');
+
+    if (successStep) successStep.classList.remove('active');
+    if (firstStep) firstStep.classList.add('active');
 }
 
 function selectServiceAndOpen(serviceId) {
     openBookingWizard();
     const service = SERVICES.find(s => s.id === serviceId);
-
-    if (service) {
-        selectWizardService(service);
-    }
+    if (service) selectWizardService(service);
 }
+
 function goToStep(stepNum) {
     document.querySelectorAll('.wizard-step').forEach(step => step.classList.remove('active'));
 
@@ -460,14 +488,13 @@ function goToStep(stepNum) {
         }
     });
 
-    if (stepNum === 2) {
-        renderCalendar();
-    } else if (stepNum === 3) {
-        renderBookingSummary();
-    }
+    if (stepNum === 2) renderCalendar();
+    if (stepNum === 3) renderBookingSummary();
 }
 
 function renderWizardServices() {
+    if (!wizardServicesList) return;
+
     wizardServicesList.innerHTML = '';
 
     SERVICES.forEach(service => {
@@ -482,10 +509,7 @@ function renderWizardServices() {
             <span class="w-service-price">$${service.price}</span>
         `;
 
-        item.addEventListener('click', () => {
-            selectWizardService(service);
-        });
-
+        item.addEventListener('click', () => selectWizardService(service));
         wizardServicesList.appendChild(item);
     });
 }
@@ -494,11 +518,7 @@ function selectWizardService(service) {
     activeBooking.service = { ...service };
 
     document.querySelectorAll('.wizard-service-item').forEach((el, index) => {
-        if (SERVICES[index] && SERVICES[index].id === service.id) {
-            el.classList.add('selected');
-        } else {
-            el.classList.remove('selected');
-        }
+        el.classList.toggle('selected', SERVICES[index] && SERVICES[index].id === service.id);
     });
 
     if (service.category === 'pelo') {
@@ -542,25 +562,13 @@ function selectWizardService(service) {
 }
 
 function renderCalendar() {
+    if (!calendarDaysGrid) return;
+
     calendarDaysGrid.innerHTML = '';
 
     const year = currentCalendarDate.getFullYear();
     const month = currentCalendarDate.getMonth();
-
-    const monthNames = [
-        "Enero",
-        "Febrero",
-        "Marzo",
-        "Abril",
-        "Mayo",
-        "Junio",
-        "Julio",
-        "Agosto",
-        "Septiembre",
-        "Octubre",
-        "Noviembre",
-        "Diciembre"
-    ];
+    const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
     calendarMonthTitle.innerText = `${monthNames[month]} ${year}`;
 
@@ -571,8 +579,7 @@ function renderCalendar() {
     today.setHours(0, 0, 0, 0);
 
     for (let i = 0; i < firstDayIndex; i++) {
-        const emptyDay = document.createElement('div');
-        calendarDaysGrid.appendChild(emptyDay);
+        calendarDaysGrid.appendChild(document.createElement('div'));
     }
 
     for (let day = 1; day <= totalDays; day++) {
@@ -581,25 +588,18 @@ function renderCalendar() {
         dayButton.innerText = day;
 
         const thisDate = new Date(year, month, day);
-
         const isSunday = thisDate.getDay() === 0;
         const isPast = thisDate < today;
 
         if (isSunday || isPast) {
             dayButton.classList.add('disabled');
         } else {
-            if (thisDate.toDateString() === today.toDateString()) {
-                dayButton.classList.add('today');
-            }
-
-            if (activeBooking.date && thisDate.toDateString() === activeBooking.date.toDateString()) {
-                dayButton.classList.add('selected');
-            }
+            if (thisDate.toDateString() === today.toDateString()) dayButton.classList.add('today');
+            if (activeBooking.date && thisDate.toDateString() === activeBooking.date.toDateString()) dayButton.classList.add('selected');
 
             dayButton.addEventListener('click', () => {
                 document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
                 dayButton.classList.add('selected');
-
                 activeBooking.date = thisDate;
                 renderTimeSlots(thisDate);
             });
@@ -608,78 +608,36 @@ function renderCalendar() {
         calendarDaysGrid.appendChild(dayButton);
     }
 
-    if (
-        activeBooking.date &&
-        activeBooking.date.getMonth() === month &&
-        activeBooking.date.getFullYear() === year
-    ) {
-        renderTimeSlots(activeBooking.date);
-    } else {
-        selectedDateLabel.innerText = 'Seleccioná un día';
-        timeslotsGrid.innerHTML = '<p class="select-date-prompt">Primero debés seleccionar un día del calendario que esté disponible.</p>';
-    }
+    selectedDateLabel.innerText = 'Seleccioná un día';
+    timeslotsGrid.innerHTML = '<p class="select-date-prompt">Primero debés seleccionar un día del calendario que esté disponible.</p>';
 }
 
 function renderTimeSlots(date) {
-    const options = { weekday: 'long', day: 'numeric', month: 'long' };
-    selectedDateLabel.innerText = date.toLocaleDateString('es-ES', options);
-
+    selectedDateLabel.innerText = date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
     timeslotsGrid.innerHTML = '';
 
-    const baseHours = [
-        "12:00",
-        "13:00",
-        "14:00",
-        "15:00",
-        "16:00",
-        "17:00",
-        "18:00",
-        "19:00",
-        "20:00"
-    ];
-
-    const isSaturday = date.getDay() === 6;
-
-    const hours = isSaturday
-        ? ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"]
-        : baseHours;
-
+    const baseHours = ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+    const saturdayHours = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+    const hours = date.getDay() === 6 ? saturdayHours : baseHours;
     const seed = date.getDate() + date.getMonth();
 
     hours.forEach((time, index) => {
         const btn = document.createElement('button');
         btn.className = 'timeslot-btn';
-        btn.innerText = time + ' hs';
+        btn.innerText = `${time} hs`;
 
         const isBooked = (seed * (index + 1) * 7) % 5 === 0;
-
         const now = new Date();
         const isToday = date.toDateString() === now.toDateString();
-
-        let isHourPassed = false;
-
-        if (isToday) {
-            const currentHour = now.getHours();
-            const slotHour = parseInt(time.split(':')[0]);
-
-            if (slotHour <= currentHour) {
-                isHourPassed = true;
-            }
-        }
+        const isHourPassed = isToday && parseInt(time.split(':')[0]) <= now.getHours();
 
         if (isBooked || isHourPassed) {
             btn.classList.add('disabled');
         } else {
-            if (activeBooking.time === time) {
-                btn.classList.add('selected');
-            }
-
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.timeslot-btn').forEach(b => b.classList.remove('selected'));
                 btn.classList.add('selected');
-
                 activeBooking.time = time;
-
                 setTimeout(() => goToStep(3), 250);
             });
         }
@@ -693,25 +651,23 @@ function renderBookingSummary() {
 
     summaryService.innerText = activeBooking.service.title;
     summaryBarber.innerText = activeBooking.barber.name;
-
-    const dateOptions = { weekday: 'long', day: 'numeric', month: 'long' };
-    summaryDate.innerText = activeBooking.date.toLocaleDateString('es-ES', dateOptions);
-    summaryTime.innerText = activeBooking.time + ' hs';
+    summaryDate.innerText = activeBooking.date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+    summaryTime.innerText = `${activeBooking.time} hs`;
     summaryCost.innerText = `$${activeBooking.service.price}`;
 }
+
 function handleBookingSubmit(e) {
     e.preventDefault();
 
     const clientName = document.getElementById('client-name').value;
     const clientPhone = document.getElementById('client-phone').value;
     const clientNotes = document.getElementById('client-notes').value;
-
-    const bookingCode = 'AVRZ-' + Math.floor(10000 + Math.random() * 90000);
+    const bookingCode = `AVRZ-${Math.floor(10000 + Math.random() * 90000)}`;
 
     const newBooking = {
         code: bookingCode,
-        clientName: clientName,
-        clientPhone: clientPhone,
+        clientName,
+        clientPhone,
         notes: clientNotes,
         service: activeBooking.service,
         barber: activeBooking.barber,
@@ -725,32 +681,23 @@ function handleBookingSubmit(e) {
     ticketBookingCode.innerText = bookingCode;
     ticketService.innerText = activeBooking.service.title;
     ticketBarber.innerText = activeBooking.barber.name;
-
-    const dateOptions = { weekday: 'long', day: 'numeric', month: 'long' };
-    ticketDate.innerText = activeBooking.date.toLocaleDateString('es-ES', dateOptions);
-    ticketTime.innerText = activeBooking.time + ' hs';
+    ticketDate.innerText = activeBooking.date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+    ticketTime.innerText = `${activeBooking.time} hs`;
     ticketClient.innerText = clientName;
     ticketPrice.innerText = `$${activeBooking.service.price}`;
 
-    const readableDate = activeBooking.date.toLocaleDateString('es-ES', dateOptions);
-
+    const readableDate = activeBooking.date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
     const waMessage = `¡Hola, Luciano! Quiero coordinar mi próximo corte.
 
 Nombre: ${clientName}
 Día y Hora: ${readableDate} a las ${activeBooking.time} hs
-Servicio (Corte/Barba): ${activeBooking.service.title}${clientNotes ? '\n\nAclaraciones: ' + clientNotes : ''}`;
+Servicio: ${activeBooking.service.title}${clientNotes ? '\n\nAclaraciones: ' + clientNotes : ''}`;
 
-    const waLink = `https://wa.me/542915376912?text=${encodeURIComponent(waMessage)}`;
-
-    window.open(waLink, '_blank');
+    window.open(`https://wa.me/542915376912?text=${encodeURIComponent(waMessage)}`, '_blank');
 
     goToStep('success');
     renderBookingsList();
 }
-
-// ==========================================
-// SECCIÓN MIS TURNOS
-// ==========================================
 
 function renderBookingsList() {
     bookingsCountBadge.innerText = bookings.length;
@@ -770,15 +717,9 @@ function renderBookingsList() {
 
     bookingsList.innerHTML = '';
 
-    const sortedBookings = [...bookings].reverse();
-
-    sortedBookings.forEach(booking => {
+    [...bookings].reverse().forEach(booking => {
         const itemDate = new Date(booking.date);
-        const readableDate = itemDate.toLocaleDateString('es-ES', {
-            weekday: 'short',
-            day: 'numeric',
-            month: 'short'
-        });
+        const readableDate = itemDate.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' });
 
         const card = document.createElement('div');
         card.className = 'booking-item-card';
@@ -805,13 +746,9 @@ function cancelBooking(code) {
         bookings = bookings.filter(b => b.code !== code);
         localStorage.setItem('avrz_bookings', JSON.stringify(bookings));
         renderBookingsList();
-
         alert('Cita cancelada con éxito.');
     }
 }
-// ==========================================
-// TIENDA / CARRITO DE COMPRAS
-// ==========================================
 
 function findProductById(id) {
     for (const prod of PRODUCTS) {
@@ -846,10 +783,7 @@ function addToCart(prodId, qty = 1) {
     if (existing) {
         existing.quantity += qty;
     } else {
-        cart.push({
-            product: prod,
-            quantity: qty
-        });
+        cart.push({ product: prod, quantity: qty });
     }
 
     saveAndRefreshCart();
@@ -861,10 +795,7 @@ function updateCartQty(prodId, newQty) {
         cart = cart.filter(item => item.product.id !== prodId);
     } else {
         const item = cart.find(item => item.product.id === prodId);
-
-        if (item) {
-            item.quantity = newQty;
-        }
+        if (item) item.quantity = newQty;
     }
 
     saveAndRefreshCart();
@@ -950,31 +881,19 @@ function handleCartCheckout() {
 
     messageText += `\n*Total a pagar:* *$${total}*\n\nCoordinamos el retiro por el local en O'Higgins 179.`;
 
-    const waLink = `https://wa.me/542915376912?text=${encodeURIComponent(messageText)}`;
-
-    window.open(waLink, '_blank');
+    window.open(`https://wa.me/542915376912?text=${encodeURIComponent(messageText)}`, '_blank');
 
     cart = [];
     saveAndRefreshCart();
-
     cartPanel.classList.remove('open');
 
     alert('¡Pedido enviado por WhatsApp! Nos contactaremos para coordinar la entrega.');
 }
-// ==========================================
-// SELECCIÓN DE VARIANTES (MODAL)
-// ==========================================
-
-let selectedVariantId = null;
-let currentGroupedProduct = null;
-let variantQty = 1;
 
 function openVariantSelector(prodId) {
     const prod = PRODUCTS.find(p => p.id === prodId);
-
     if (!prod || prod.type !== 'grouped') return;
 
-    currentGroupedProduct = prod;
     selectedVariantId = prod.variants[0].id;
     variantQty = 1;
 
@@ -1012,49 +931,3 @@ function openVariantSelector(prodId) {
 
     document.getElementById('variant-modal').classList.add('open');
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    const variantModal = document.getElementById('variant-modal');
-    const closeVariantModalBtn = document.getElementById('close-variant-modal');
-    const variantModalOverlay = document.getElementById('variant-modal-overlay');
-    const variantQtyMinus = document.getElementById('variant-qty-minus');
-    const variantQtyPlus = document.getElementById('variant-qty-plus');
-    const addVariantToCartBtn = document.getElementById('add-variant-to-cart-btn');
-
-    const closeVariantModal = () => {
-        variantModal.classList.remove('open');
-    };
-
-    if (closeVariantModalBtn) {
-        closeVariantModalBtn.addEventListener('click', closeVariantModal);
-    }
-
-    if (variantModalOverlay) {
-        variantModalOverlay.addEventListener('click', closeVariantModal);
-    }
-
-    if (variantQtyMinus) {
-        variantQtyMinus.addEventListener('click', () => {
-            if (variantQty > 1) {
-                variantQty--;
-                document.getElementById('variant-qty-value').innerText = variantQty;
-            }
-        });
-    }
-
-    if (variantQtyPlus) {
-        variantQtyPlus.addEventListener('click', () => {
-            variantQty++;
-            document.getElementById('variant-qty-value').innerText = variantQty;
-        });
-    }
-
-    if (addVariantToCartBtn) {
-        addVariantToCartBtn.addEventListener('click', () => {
-            if (selectedVariantId) {
-                addToCart(selectedVariantId, variantQty);
-                closeVariantModal();
-            }
-        });
-    }
-});
