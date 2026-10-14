@@ -609,23 +609,26 @@ function renderTimeSlots(date) {
 
     timeslotsGrid.innerHTML = '';
 
-    const baseHours = [
-        "12:00",
-        "13:00",
-        "14:00",
-        "15:00",
-        "16:00",
-        "17:00",
-        "18:00",
-        "19:00",
-        "20:00"
+    // Bloque 1: 8:30 a 10:30 | Bloque 2: 10:00 a 12:00 (Lunes a Viernes)
+    const hoursWeekday = [
+        "8:30",
+        "9:30",
+        "10:00",
+        "10:30",
+        "11:00",
+        "12:00"
+    ];
+
+    // Sábado: solo Bloque 1 (8:30 a 10:30)
+    const hoursSaturday = [
+        "8:30",
+        "9:30",
+        "10:30"
     ];
 
     const isSaturday = date.getDay() === 6;
 
-    const hours = isSaturday
-        ? ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"]
-        : baseHours;
+    const hours = isSaturday ? hoursSaturday : hoursWeekday;
 
     const seed = date.getDate() + date.getMonth();
 
@@ -642,10 +645,12 @@ function renderTimeSlots(date) {
         let isHourPassed = false;
 
         if (isToday) {
-            const currentHour = now.getHours();
-            const slotHour = parseInt(time.split(':')[0]);
+            const now2 = new Date();
+            const [slotH, slotM] = time.split(':').map(Number);
+            const slotMinutesTotal = slotH * 60 + (slotM || 0);
+            const nowMinutesTotal = now2.getHours() * 60 + now2.getMinutes();
 
-            if (slotHour <= currentHour) {
+            if (slotMinutesTotal <= nowMinutesTotal) {
                 isHourPassed = true;
             }
         }
