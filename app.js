@@ -609,21 +609,21 @@ function renderTimeSlots(date) {
 
     timeslotsGrid.innerHTML = '';
 
-    // Bloque 1: 8:30 a 10:30 | Bloque 2: 10:00 a 12:00 (Lunes a Viernes)
+    // Bloque mañana: 10:00 a 12:00 | Bloque noche: 20:30 a 22:30 (Lunes a Viernes)
     const hoursWeekday = [
-        "8:30",
-        "9:30",
         "10:00",
-        "10:30",
         "11:00",
-        "12:00"
+        "12:00",
+        "20:30",
+        "21:30",
+        "22:30"
     ];
 
-    // Sábado: solo Bloque 1 (8:30 a 10:30)
+    // Sábado: solo Bloque noche (20:30 a 22:30)
     const hoursSaturday = [
-        "8:30",
-        "9:30",
-        "10:30"
+        "20:30",
+        "21:30",
+        "22:30"
     ];
 
     const isSaturday = date.getDay() === 6;
